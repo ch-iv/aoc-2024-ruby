@@ -2,9 +2,9 @@
 
 # Solver helper
 class Solver
-  def solve_dir(solver, directory)
+  def solve_dir(solver, directory, exclude: [])
     Dir.foreach(directory) do |file|
-      next if (file == '.') || (file == '..')
+      next if (file == '.') || (file == '..') || exclude.include?(file)
 
       input = read_input(directory + file)
       output = method(solver).call(input)
@@ -38,5 +38,15 @@ def day1p2(input)
   list1.sum { |a| a * tally.fetch(a, 0) }
 end
 
+def day2p1(input)
+  input.map { |s| s.split(' ').map(&:to_i) }.map do |level|
+    diffs = level[0..-2].zip(level[1..]).map { |a, b| a - b }
+    diffs.all? { |x| x.abs >= 1 && x.abs <= 3 } && (
+      diffs.all?(&:negative?) ^ diffs.all?(&:positive?)
+    )
+  end.count(true)
+end
+
 # Solver.new.solve_dir(:day1p1, 'inputs/day1p1/')
-Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
+# Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
+Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
