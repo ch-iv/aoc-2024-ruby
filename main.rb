@@ -47,6 +47,19 @@ def day2p1(input)
   end.count(true)
 end
 
+def day2p2(input)
+  input.map { |s| s.split(' ').map(&:to_i) }.map do |level|
+    (0...level.length).map do |i|
+      level_exc = level.reject.with_index { |_, j| j == i }
+      diffs = level_exc[0..-2].zip(level_exc[1..]).map { |a, b| a - b }
+      diffs.all? { |x| x.abs >= 1 && x.abs <= 3 } && (
+        diffs.all?(&:negative?) ^ diffs.all?(&:positive?)
+      )
+    end.any?
+  end.count(true)
+end
+
 # Solver.new.solve_dir(:day1p1, 'inputs/day1p1/')
 # Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
-Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
+# Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
+Solver.new.solve_dir(:day2p2, 'inputs/day2p2/')
