@@ -59,7 +59,12 @@ def day2p2(input)
   end.count(true)
 end
 
+def day3p1(input)
+  input.join.scan(/mul\((\d{1,3}),(\d{1,3})\)/).map { |a, b| a.to_i * b.to_i }.sum
+end
+
 # Solver.new.solve_dir(:day1p1, 'inputs/day1p1/')
 # Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
 # Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
-Solver.new.solve_dir(:day2p2, 'inputs/day2p2/')
+# Solver.new.solve_dir(:day2p2, 'inputs/day2p2/')
+Solver.new.solve_dir(:day3p1, 'inputs/day3p1/')
