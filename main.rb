@@ -93,10 +93,22 @@ def day4p1(input, rec=false)
   end.sum + (rec ? day4p1(input.transpose, false) : 0)
 end
 
+def day4p2(input)
+  input.each_with_index.map do |row, y|
+    row.chars.each_with_index.map do |_, x|
+      if y >= 1 && y <= input.length - 2 && x >= 1 && x <= input[y].length - 2
+        chars = [input[y-1][x-1], input[y-1][x+1], input[y+1][x-1], input[y+1][x+1]]
+        input[y][x] == 'A' && chars.count('M') == 2 && chars.count('S') == 2 && chars[0] != chars[3] && chars[1] != chars[2]
+      end
+    end.count(true)
+  end.sum
+end
+
 # Solver.new.solve_dir(:day1p1, 'inputs/day1p1/')
 # Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
 # Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
 # Solver.new.solve_dir(:day2p2, 'inputs/day2p2/')
 # Solver.new.solve_dir(:day3p1, 'inputs/day3p1/')
 # Solver.new.solve_dir(:day3p2, 'inputs/day3p2/')
-Solver.new.solve_dir(:day4p1, 'inputs/day4p1/')
+# Solver.new.solve_dir(:day4p1, 'inputs/day4p1/')
+Solver.new.solve_dir(:day4p2, 'inputs/day4p2/')
