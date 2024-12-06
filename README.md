@@ -14,7 +14,7 @@
     - [X] Part 2
 - Day 5
     - [X] Part 1
-    - [ ] Part 2
+    - [X] Part 2
 - Day 6
     - [ ] Part 1
     - [ ] Part 2
