@@ -150,6 +150,56 @@ def day5p2(input)
   end.sum
 end
 
+class Guard
+  attr_reader :x
+  attr_reader :y
+
+  def initialize(x, y)
+    @direction = [0, -1]
+    @x = x
+    @y = y
+  end
+
+  def advance
+    @x, @y = self.next
+    [@x, @y]
+  end
+
+  def next
+    [@x + @direction[0], @y + @direction[1]]
+  end
+
+  def turn
+    case @direction
+    when [0, -1]
+      @direction = [1, 0]
+    when [1, 0]
+      @direction = [0, 1]
+    when [0, 1]
+      @direction = [-1, 0]
+    when [-1, 0]
+      @direction = [0, -1]
+    end
+  end
+end
+
+def day6p1(input)
+  guard = Guard.new(0, 0)
+  input.each_with_index.map do |row, y|
+    row.chars.each_with_index.map do |_, x|
+      guard = Guard.new(x, y) if input[y][x] == '^'
+    end
+  end
+  seen = Set.new
+  while guard.y >= 0 && guard.y < input.size && guard.x >= 0 && guard.x < input[guard.y].size
+    seen << [guard.x, guard.y]
+    nx, ny = guard.next
+    guard.turn if ny >= 0 && ny < input.size && nx >= 0 && nx < input[ny].size && input[ny][nx] == '#'
+    guard.advance
+  end
+  seen.size
+end
+
 # Solver.new.solve_dir(:day1p1, 'inputs/day1p1/')
 # Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
 # Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
@@ -159,4 +209,5 @@ end
 # Solver.new.solve_dir(:day4p1, 'inputs/day4p1/')
 # Solver.new.solve_dir(:day4p2, 'inputs/day4p2/')
 # Solver.new.solve_dir(:day5p1, 'inputs/day5p1/')
-Solver.new.solve_dir(:day5p2, 'inputs/day5p2/')
+# Solver.new.solve_dir(:day5p2, 'inputs/day5p2/')
+Solver.new.solve_dir(:day6p1, 'inputs/day6p1/')
