@@ -104,6 +104,30 @@ def day4p2(input)
   end.sum
 end
 
+def day5p1(input)
+  rules = Hash.new(Set.new)
+  manuals = []
+  input.each do |line|
+    if (line == '') .. false
+      manuals.append(line.split(',').map(&:to_i)) unless line == ''
+    else
+      a, b = line.split('|').map(&:to_i)
+      rules[a] += [b]
+    end
+  end
+
+  manuals.map do |manual|
+    if (0..manual.size - 2).map do |i|
+      puts rules[manual[i]].include?(manual[i + 1])
+      rules[manual[i]].include?(manual[i + 1])
+    end.all?
+      manual[manual.size / 2]
+    else
+      0
+    end
+  end.sum
+end
+
 # Solver.new.solve_dir(:day1p1, 'inputs/day1p1/')
 # Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
 # Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
@@ -111,4 +135,5 @@ end
 # Solver.new.solve_dir(:day3p1, 'inputs/day3p1/')
 # Solver.new.solve_dir(:day3p2, 'inputs/day3p2/')
 # Solver.new.solve_dir(:day4p1, 'inputs/day4p1/')
-Solver.new.solve_dir(:day4p2, 'inputs/day4p2/')
+# Solver.new.solve_dir(:day4p2, 'inputs/day4p2/')
+Solver.new.solve_dir(:day5p1, 'inputs/day5p1/')
