@@ -151,8 +151,7 @@ def day5p2(input)
 end
 
 class Guard
-  attr_reader :x
-  attr_reader :y
+  attr_reader :x, :y
 
   def initialize(x, y)
     @direction = [0, -1]
@@ -181,6 +180,14 @@ class Guard
       @direction = [0, -1]
     end
   end
+
+  def dx
+    @direction[0]
+  end
+
+  def dy
+    @direction[1]
+  end
 end
 
 def day6p1(input)
@@ -200,6 +207,45 @@ def day6p1(input)
   seen.size
 end
 
+def day6p2(input)
+  gx = 0
+  gy = 0
+  input.each_with_index.map do |row, y|
+    row.chars.each_with_index.map do |_, x|
+      if input[y][x] == '^'
+        gx = x
+        gy = y
+      end
+    end
+  end
+
+  n_cycles = 0
+  input.each_with_index do |row, y|
+    row.chars.each_with_index do |_, x|
+      puts "x: #{x} y: #{y}"
+      next if gx == x && gy == y
+
+      guard = Guard.new(gx, gy)
+      seen = Set.new
+      while guard.y >= 0 && guard.y < input.size && guard.x >= 0 && guard.x < input[guard.y].size
+        if seen.include?([guard.x, guard.y, guard.dx, guard.dy])
+          # in a cycle
+          n_cycles += 1
+          break
+        end
+
+        seen << [guard.x, guard.y, guard.dx, guard.dy]
+        nx, ny = guard.next
+        if ny >= 0 && ny < input.size && nx >= 0 && nx < input[ny].size && (input[ny][nx] == '#' || (nx == x && ny == y))
+          guard.turn
+        end
+        guard.advance
+      end
+    end
+  end
+  n_cycles
+end
+
 # Solver.new.solve_dir(:day1p1, 'inputs/day1p1/')
 # Solver.new.solve_dir(:day1p2, 'inputs/day1p2/')
 # Solver.new.solve_dir(:day2p1, 'inputs/day2p1/')
@@ -210,4 +256,5 @@ end
 # Solver.new.solve_dir(:day4p2, 'inputs/day4p2/')
 # Solver.new.solve_dir(:day5p1, 'inputs/day5p1/')
 # Solver.new.solve_dir(:day5p2, 'inputs/day5p2/')
-Solver.new.solve_dir(:day6p1, 'inputs/day6p1/')
+# Solver.new.solve_dir(:day6p1, 'inputs/day6p1/')
+Solver.new.solve_dir(:day6p2, 'inputs/day6p2/', exclude: ['test.txt'])
